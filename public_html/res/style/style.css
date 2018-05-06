@@ -1,0 +1,44 @@
+body{
+    font-family: Arial;
+}
+
+#navBar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+#navBar li {
+    float: left;
+}
+
+#navBar li a {
+    display: block;
+    color: #fff;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#navBar li a:hover, #navBar li .active{
+    background-color: #555;
+}
+
+nav{
+    padding-bottom: 50px;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+tr td{
+    min-width: 30px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
