@@ -35,10 +35,36 @@ table{
     margin-right: auto;
 }
 
+table input, table select{
+    height: 40px;
+    background-color: transparent;
+    border-color: #333;
+    width: 100%;
+}
+
+td:hover{
+    background-color: #ddd;
+}
+
+tr{
+    height: 40px;
+}
+
 tr td{
-    min-width: 30px;
+    min-width: 40px;
+    height: 40px;
 }
 
 tr:nth-child(even) {
     background-color: #f2f2f2;
+}
+
+form{
+    margin: 0;
+}
+
+.centerBlock{
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
 }

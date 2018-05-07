@@ -4,10 +4,5 @@
     <link rel="stylesheet" href="res/style/style.css"/>
 
 </head>
-<?php
-$page = "artists";
-include "res/frags/header.php";
-
-$catalogue->cds->table();
-?>
+<?php include "res/frags/header.php"; ?>
 </html>

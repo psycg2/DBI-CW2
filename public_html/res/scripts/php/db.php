@@ -20,16 +20,26 @@ abstract class Database{
 }
 
 abstract class Table{
+    public $inputs;
+    public $types;
+    public $cols;
+
     public function __construct($table_name, $conn){
         $this->table_name = $table_name;
         $this->conn = $conn;
     }
 
+    function set_inputs(...$inputs){
+        $this->inputs = $inputs;
+    }
+
     abstract function insert($values);
 
-    abstract function table();
+    abstract function table($search);
 
     abstract function remove($id);
+
+    abstract function update($id, $column, $value);
 
     abstract function get_by_id($id);
 }
@@ -40,6 +50,15 @@ abstract class Entity{
     }
 
     abstract function to_val_array();
+}
+
+function query($conn, $sql,$type_string, ...$params){
+    $stmt = $conn->prepare($sql);
+    if($params[0]) {
+        $stmt->bind_param($type_string, ...$params);
+    }
+    $stmt->execute();
+    return $stmt;
 }
 
 
@@ -55,9 +74,7 @@ function read($conn, $table_name, $column_names){
         $sql = substr($sql, 0, -2) . ") ";
     }
     $sql .= "FROM {$table_name} ORDER BY 1;";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    return $stmt;
+    return query($conn, $sql, null, null);
 }
 
 function remove($conn, $table_name, $type_string, $column_names, $column_values){
@@ -71,9 +88,7 @@ function remove($conn, $table_name, $type_string, $column_names, $column_values)
         $sql .= "?, ";
     }
     $sql = substr($sql, 0, -2) . ");";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param($type_string, ...$column_values);
-    $stmt->execute();
+    query($conn, $sql, $type_string, $column_values);
     header("Refresh:0");
 }
 
@@ -90,10 +105,22 @@ function insert($conn, $table_name, $type_string, $column_names, $column_values)
     }
 
     $sql = substr($sql, 0, -2) . ");";
+    query($conn, $sql, $type_string, $column_values);
+    header("Refresh:0");
+}
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param($type_string, ...$column_values);
-    $stmt->execute();
+function update($conn, $table_name, $type_string, $column_name, $value, $id_names, $id_values){
+    $sql = "UPDATE {$table_name} SET {$column_name} = ? WHERE (";
+    foreach ($id_names as $id_name){
+        $sql .= $id_name . ", ";
+    }
+    $sql = substr($sql, 0, -2) . ") = (";
+
+    foreach ($id_values as $_){
+        $sql .= "?, ";
+    }
+    $sql = substr($sql, 0, -2) . ");";
+    query($conn, $sql, $type_string, $value, $id_values);
     header("Refresh:0");
 }
 
