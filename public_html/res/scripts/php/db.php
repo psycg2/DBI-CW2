@@ -88,7 +88,7 @@ function remove($conn, $table_name, $type_string, $column_names, $column_values)
         $sql .= "?, ";
     }
     $sql = substr($sql, 0, -2) . ");";
-    query($conn, $sql, $type_string, $column_values);
+    query($conn, $sql, $type_string, ...$column_values);
     header("Refresh:0");
 }
 
@@ -105,7 +105,7 @@ function insert($conn, $table_name, $type_string, $column_names, $column_values)
     }
 
     $sql = substr($sql, 0, -2) . ");";
-    query($conn, $sql, $type_string, $column_values);
+    query($conn, $sql, $type_string, ...$column_values);
     header("Refresh:0");
 }
 
@@ -120,7 +120,7 @@ function update($conn, $table_name, $type_string, $column_name, $value, $id_name
         $sql .= "?, ";
     }
     $sql = substr($sql, 0, -2) . ");";
-    query($conn, $sql, $type_string, $value, $id_values);
+    query($conn, $sql, $type_string, $value, ...$id_values);
     header("Refresh:0");
 }
 
